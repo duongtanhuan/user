@@ -1,6 +1,9 @@
 package com.supportportal.domain;
 
-import jakarta.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -9,18 +12,20 @@ public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false, updatable = false)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long id;
     private String userId;
     private String firstName;
     private String lastName;
     private String userName;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String passWord;
     private String email;
     private String profileImageUrl;
     private Date lastLoginDate;
     private Date lastLoginDateDisplay;
     private Date joinDate;
-    private String[] roles;
+    private String role; // ROLE_USER{ read, edit}, ROLE_ADMIN {delete}
     private String[] authorities;
     private boolean isActive;
     private boolean isNotLocked;
@@ -40,7 +45,7 @@ public class User implements Serializable {
         this.lastLoginDate = lastLoginDate;
         this.lastLoginDateDisplay = lastLoginDateDisplay;
         this.joinDate = joinDate;
-        this.roles = roles;
+        this.role = role;
         this.authorities = authorities;
         this.isActive = isActive;
         this.isNotLocked = isNotLocked;
@@ -134,12 +139,12 @@ public class User implements Serializable {
         this.joinDate = joinDate;
     }
 
-    public String[] getRoles() {
-        return roles;
+    public String getRole() {
+        return role;
     }
 
-    public void setRoles(String[] roles) {
-        this.roles = roles;
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String[] getAuthorities() {
